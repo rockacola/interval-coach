@@ -17,25 +17,24 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 
 ---
 
-## Phase 2 — Session + Runner Management
+## Phase 2 — Runner Management
 
-- [x] `sessionStore` — create / start / end / clear session
 - [x] `runnerStore` — add / update / remove / reorder runners + runtime state cache
-- [x] `SetupView` — session name input, add runners with bib, remove runner, start session button
-- [ ] Drag-and-drop runner reordering in SetupView
+- [x] `HomeView` — add runners with bib, remove runner
+- [ ] Drag-and-drop runner reordering
   - Use native HTML5 drag API or a lightweight library (e.g. `vue-draggable-plus`)
   - Call `runnerStore.reorderRunners()` on drop
-- [ ] Edit runner name / bib in SetupView (inline or modal)
+- [ ] Edit runner name / bib (inline or modal)
 
 ---
 
 ## Phase 3 — Timing Engine
 
 - [x] `timingStore` — startInterval, startRunner, recordFinish, pauseRunner, resumeRunner
-- [x] `LiveSessionView` — session elapsed timer (rAF-driven), per-runner elapsed display
-- [x] Start Interval button (starts all idle runners)
-- [x] Tap-to-finish button per runner
-- [x] Pause / Resume toggle per runner
+- [ ] Live session view — session elapsed timer (rAF-driven), per-runner elapsed display
+- [ ] Start Interval button (starts all idle runners)
+- [ ] Tap-to-finish button per runner
+- [ ] Pause / Resume toggle per runner
 - [ ] Per-runner "start late" button (start individual runner who joined an interval late)
 - [ ] Rest phase indicator — show time elapsed since last interval ended
 - [ ] Haptic feedback on finish tap (`navigator.vibrate(50)`) for outdoor confirmation
@@ -46,7 +45,7 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 
 - [x] `timingStore.overrideLap()` — attaches LapOverride without mutating original
 - [x] `timingStore.clearOverride()` — removes override
-- [ ] Edit lap modal / inline input in SummaryView or during session
+- [ ] Edit lap modal / inline input in summary view or during session
   - Show original time + corrected time side-by-side
   - Accept `mm:ss` or `mm:ss.t` format input
   - Validate: non-zero, reasonable range (< 1 hour)
@@ -58,17 +57,13 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 
 - [x] All four stores configured with `persist: true`
 - [x] `RunnerRuntimeState` (including `state: 'running'`) persisted in runnerStore
-- [x] Session guard in LiveSessionView (redirect to setup if no session)
-- [ ] "Resume session" banner on SetupView when an active session exists in storage _(partial — banner shown but runners cleared on "Start Session")_
-  - Fix: don't call `clearAll()` on Start if there's an existing active session; only on explicit "New Session"
 - [ ] Manual test: refresh mid-interval → runner timer resumes from correct elapsed
-- [ ] Manual test: refresh after recording laps → lap list intact in SummaryView
 
 ---
 
 ## Phase 6 — Summary View
 
-- [x] `SummaryView` — per-runner lap list, fastest lap, average lap time
+- [ ] Summary view — per-runner lap list, fastest lap, average lap time
 - [ ] Session total time display
 - [ ] Export / share summary as text (copy to clipboard)
 - [ ] Fastest lap highlighted across all runners (session-best)

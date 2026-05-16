@@ -1,8 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-import LiveSessionView from '@/views/LiveSessionView.vue';
-import SetupView from '@/views/SetupView.vue';
-import SummaryView from '@/views/SummaryView.vue';
+import HomeView from '@/views/HomeView.vue';
 
 const router = createRouter({
   // Hash history avoids 404s on GitHub Pages without server config
@@ -10,18 +8,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'setup',
-      component: SetupView,
-    },
-    {
-      path: '/session',
-      name: 'session',
-      component: LiveSessionView,
-    },
-    {
-      path: '/summary',
-      name: 'summary',
-      component: SummaryView,
+      name: 'home',
+      component: HomeView,
     },
   ],
 });

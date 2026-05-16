@@ -83,11 +83,7 @@ Hash history (`createWebHashHistory`) is used throughout so the app works on Git
 
 Routes:
 
-- `#/` — Setup: create session, add/reorder runners
-- `#/session` — Live session: interval control, tap-to-finish
-- `#/summary` — Post-session breakdown
-
-Guard: `LiveSessionView` redirects to setup if no active session is found on mount (handles direct URL access after a refresh with cleared storage).
+- `#/` — Home: add/manage runners
 
 ---
 

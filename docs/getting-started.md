@@ -79,9 +79,9 @@ All four stores (`session`, `runner`, `timing`, `history`) are persisted with `p
 
 ### Vue Router (hash history)
 
-Vue Router handles client-side navigation between the three screens: Setup → Live Session → Summary.
+Vue Router handles client-side navigation. Currently the app has a single screen (`HomeView`), with more screens to be added as the live session and summary flows are built.
 
-The app uses **hash history** (`createWebHashHistory`), meaning URLs look like `https://example.com/interval-coach/#/session` rather than `https://example.com/interval-coach/session`. The reason: this app is deployed to GitHub Pages, which is a static file host. With a normal URL like `/session`, refreshing the page asks the server for `/session` — and GitHub Pages returns a 404 because there's no file there. With hash routing, the server always serves `index.html` and the browser handles the `#/session` part itself. No server configuration needed.
+The app uses **hash history** (`createWebHashHistory`), meaning URLs look like `https://example.com/interval-coach/#/` rather than `https://example.com/interval-coach/`. The reason: this app is deployed to GitHub Pages, which is a static file host. With a normal URL, refreshing the page asks the server for that path — and GitHub Pages returns a 404 because there's no file there. With hash routing, the server always serves `index.html` and the browser handles everything after `#` itself. No server configuration needed.
 
 ### Tailwind CSS v4
 
@@ -104,16 +104,14 @@ src/
 ├── assets/
 │   └── main.css         # global CSS (imports Tailwind)
 ├── router/
-│   └── index.ts         # route definitions (Setup / LiveSession / Summary)
+│   └── index.ts         # route definitions
 ├── stores/              # Pinia stores — all application state lives here
 │   ├── sessionStore.ts  # current session (name, status, timestamps)
 │   ├── runnerStore.ts   # runner list and per-runner runtime state
 │   ├── timingStore.ts   # events, intervals, laps — the core timing logic
 │   └── historyStore.ts  # completed session archive
 ├── views/               # one component per screen (mounted by the router)
-│   ├── SetupView.vue
-│   ├── LiveSessionView.vue
-│   └── SummaryView.vue
+│   └── HomeView.vue     # runner management
 ├── types/
 │   └── index.ts         # all shared TypeScript types in one place
 ├── utils/
