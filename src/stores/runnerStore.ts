@@ -54,6 +54,14 @@ export const useRunnerStore = defineStore(
       runner.deleted = true;
     }
 
+    function restoreRunner(id: RunnerId): void {
+      const runner = runners.value.find((r) => r.id === id);
+      if (!runner) {
+        return;
+      }
+      runner.deleted = false;
+    }
+
     function reorderRunners(orderedIds: RunnerId[]): void {
       orderedIds.forEach((id, index) => {
         const runner = runners.value.find((r) => r.id === id);
@@ -97,6 +105,7 @@ export const useRunnerStore = defineStore(
       addRunner,
       updateRunner,
       removeRunner,
+      restoreRunner,
       reorderRunners,
       getRuntimeState,
       setRunnerState,

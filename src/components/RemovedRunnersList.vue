@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useLocalStorageRef } from '@/composables/useLocalStorageRef';
-import type { Runner } from '@/types';
+import type { Runner, RunnerId } from '@/types';
 
 defineProps<{ runners: Runner[] }>();
+const emit = defineEmits<{ restore: [id: RunnerId] }>();
 
 const expanded = useLocalStorageRef('home.removedExpanded', false);
 </script>
@@ -20,12 +21,18 @@ const expanded = useLocalStorageRef('home.removedExpanded', false);
       <li
         v-for="runner in runners"
         :key="runner.id"
-        class="flex items-center px-4 py-3 rounded-lg bg-slate-800/50"
+        class="flex items-center justify-between px-4 py-3 rounded-lg bg-slate-800/50"
       >
         <span class="text-slate-500">
           <span v-if="runner.bibNumber" class="text-sm mr-2">#{{ runner.bibNumber }}</span>
           <span>{{ runner.name }}</span>
         </span>
+        <button
+          class="text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
+          @click="emit('restore', runner.id)"
+        >
+          Restore
+        </button>
       </li>
     </ul>
   </div>

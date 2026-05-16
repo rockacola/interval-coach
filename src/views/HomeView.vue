@@ -31,6 +31,7 @@ function addRunner(name: string, bib: string) {
     <RemovedRunnersList
       v-if="runnerStore.deletedRunners.length"
       :runners="runnerStore.deletedRunners"
+      @restore="runnerStore.restoreRunner"
     />
   </div>
 </template>
