@@ -27,7 +27,7 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 - [ ] Drag-and-drop runner reordering
   - Use native HTML5 drag API or a lightweight library (e.g. `vue-draggable-plus`)
   - Call `runnerStore.reorderRunners()` on drop
-- [ ] Edit runner name / bib (inline or modal)
+- [x] Edit runner name inline — global edit-mode toggle (pencil icon in header) turns name into live input
 
 ---
 

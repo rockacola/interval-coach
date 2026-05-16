@@ -8,7 +8,7 @@ import { useTimingStore } from '@/stores/timingStore';
 import type { Runner } from '@/types';
 import { formatStopwatch, formatStopwatchShort } from '@/utils/timing';
 
-const props = defineProps<{ runner: Runner }>();
+const props = defineProps<{ editMode: boolean; runner: Runner }>();
 
 const runnerStore = useRunnerStore();
 const settingsStore = useSettingsStore();
@@ -42,6 +42,16 @@ function toggleTimer() {
 function remove() {
   runnerStore.removeRunner(props.runner.id);
 }
+
+function onNameInput(event: Event) {
+  const value = (event.target as HTMLInputElement).value;
+  runnerStore.updateRunner(props.runner.id, { name: value });
+}
+
+function onBibInput(event: Event) {
+  const value = (event.target as HTMLInputElement).value;
+  runnerStore.updateRunner(props.runner.id, { bibNumber: value });
+}
 </script>
 
 <template>
@@ -49,11 +59,26 @@ function remove() {
     <!-- Name + stopwatch + buttons -->
     <div class="flex items-center justify-between">
       <span class="flex items-center gap-3">
-        <span>
-          <span v-if="runner.bibNumber" class="text-slate-400 text-sm mr-2"
-            >#{{ runner.bibNumber }}</span
-          >
-          <span class="font-medium">{{ runner.name }}</span>
+        <span class="flex items-center gap-2">
+          <template v-if="editMode">
+            <input
+              :value="runner.bibNumber"
+              placeholder="Bib"
+              class="text-slate-400 text-sm bg-slate-700 border border-slate-600 rounded px-1 focus:outline-none focus:border-amber-400 w-14"
+              @input="onBibInput"
+            />
+            <input
+              :value="runner.name"
+              class="font-medium bg-slate-700 border border-slate-600 rounded px-1 focus:outline-none focus:border-amber-400 min-w-0 w-36"
+              @input="onNameInput"
+            />
+          </template>
+          <template v-else>
+            <span v-if="runner.bibNumber" class="text-slate-400 text-sm"
+              >#{{ runner.bibNumber }}</span
+            >
+            <span class="font-medium">{{ runner.name }}</span>
+          </template>
         </span>
         <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{
           elapsedDisplay
