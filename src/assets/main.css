@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* Prevent text size adjustment on orientation change (iOS) */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Disable double-tap zoom on tap targets */
+* {
+  touch-action: manipulation;
+}
+
+/* Prevent pull-to-refresh interfering with scroll */
+body {
+  overscroll-behavior-y: contain;
+}
