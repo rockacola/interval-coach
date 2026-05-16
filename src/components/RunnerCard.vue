@@ -97,7 +97,8 @@ function onBibInput(event: Event) {
           {{ isRunning ? 'Stop' : 'Start' }}
         </button>
         <button
-          class="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white px-2 py-1 rounded leading-none cursor-pointer"
+          v-if="editMode"
+          class="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white px-2 py-1 rounded text-sm cursor-pointer"
           aria-label="Remove runner"
           @click="remove"
         >
