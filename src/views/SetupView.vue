@@ -1,52 +1,53 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useSessionStore } from '@/stores/sessionStore'
-import { useRunnerStore } from '@/stores/runnerStore'
-import { useTimingStore } from '@/stores/timingStore'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const sessionStore = useSessionStore()
-const runnerStore = useRunnerStore()
-const timingStore = useTimingStore()
+import { useRunnerStore } from '@/stores/runnerStore';
+import { useSessionStore } from '@/stores/sessionStore';
+import { useTimingStore } from '@/stores/timingStore';
 
-const sessionName = ref('Morning Track Session')
-const newRunnerName = ref('')
-const newRunnerBib = ref('')
+const router = useRouter();
+const sessionStore = useSessionStore();
+const runnerStore = useRunnerStore();
+const timingStore = useTimingStore();
+
+const sessionName = ref('Morning Track Session');
+const newRunnerName = ref('');
+const newRunnerBib = ref('');
 
 function addRunner() {
-  const name = newRunnerName.value.trim()
-  if (!name) return
-  runnerStore.addRunner(name, newRunnerBib.value || undefined)
-  newRunnerName.value = ''
-  newRunnerBib.value = ''
+  const name = newRunnerName.value.trim();
+  if (!name) return;
+  runnerStore.addRunner(name, newRunnerBib.value || undefined);
+  newRunnerName.value = '';
+  newRunnerBib.value = '';
 }
 
 function removeRunner(id: string) {
-  runnerStore.removeRunner(id)
+  runnerStore.removeRunner(id);
 }
 
 function startSession() {
-  if (runnerStore.runners.length === 0) return
+  if (runnerStore.runners.length === 0) return;
   // Clear any previous session data
-  sessionStore.clearSession()
-  runnerStore.clearAll()
-  timingStore.clearAll()
+  sessionStore.clearSession();
+  runnerStore.clearAll();
+  timingStore.clearAll();
 
   // Re-add runners from local list (already in store since addRunner was called)
   // Create and start session
-  const session = sessionStore.createSession(sessionName.value)
-  sessionStore.startSession()
-  void session
-  router.push({ name: 'session' })
+  const session = sessionStore.createSession(sessionName.value);
+  sessionStore.startSession();
+  void session;
+  router.push({ name: 'session' });
 }
 
 // Resume existing active session if present
 function resumeSession() {
-  router.push({ name: 'session' })
+  router.push({ name: 'session' });
 }
 
-const hasActiveSession = sessionStore.isActive
+const hasActiveSession = sessionStore.isActive;
 </script>
 
 <template>
@@ -112,7 +113,9 @@ const hasActiveSession = sessionStore.isActive
           class="flex items-center justify-between px-4 py-3 rounded-lg bg-slate-800"
         >
           <span>
-            <span v-if="runner.bibNumber" class="text-slate-400 text-sm mr-2">#{{ runner.bibNumber }}</span>
+            <span v-if="runner.bibNumber" class="text-slate-400 text-sm mr-2"
+              >#{{ runner.bibNumber }}</span
+            >
             <span class="font-medium">{{ runner.name }}</span>
           </span>
           <button

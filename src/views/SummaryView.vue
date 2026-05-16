@@ -1,32 +1,33 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useSessionStore } from '@/stores/sessionStore'
-import { useRunnerStore } from '@/stores/runnerStore'
-import { useTimingStore } from '@/stores/timingStore'
-import { formatDuration } from '@/utils/timing'
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const sessionStore = useSessionStore()
-const runnerStore = useRunnerStore()
-const timingStore = useTimingStore()
+import { useRunnerStore } from '@/stores/runnerStore';
+import { useSessionStore } from '@/stores/sessionStore';
+import { useTimingStore } from '@/stores/timingStore';
+import { formatDuration } from '@/utils/timing';
 
-const session = computed(() => sessionStore.session)
+const router = useRouter();
+const sessionStore = useSessionStore();
+const runnerStore = useRunnerStore();
+const timingStore = useTimingStore();
+
+const session = computed(() => sessionStore.session);
 
 const runnerSummaries = computed(() =>
-  runnerStore.sortedRunners.map(runner => {
-    const laps = timingStore.lapsForRunner(runner.id)
-    const fastest = timingStore.runnerFastestLap(runner.id)
-    const average = timingStore.runnerAverageLapMs(runner.id)
-    return { runner, laps, fastest, average }
+  runnerStore.sortedRunners.map((runner) => {
+    const laps = timingStore.lapsForRunner(runner.id);
+    const fastest = timingStore.runnerFastestLap(runner.id);
+    const average = timingStore.runnerAverageLapMs(runner.id);
+    return { runner, laps, fastest, average };
   })
-)
+);
 
 function newSession() {
-  sessionStore.clearSession()
-  runnerStore.clearAll()
-  timingStore.clearAll()
-  router.push({ name: 'setup' })
+  sessionStore.clearSession();
+  runnerStore.clearAll();
+  timingStore.clearAll();
+  router.push({ name: 'setup' });
 }
 </script>
 

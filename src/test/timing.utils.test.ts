@@ -1,13 +1,14 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest';
+
+import type { Lap } from '@/types';
 import {
-  formatDuration,
-  formatDurationPrecise,
-  elapsedMs,
-  fastestLap,
   averageLapMs,
   computeLapDuration,
-} from '@/utils/timing'
-import type { Lap } from '@/types'
+  elapsedMs,
+  fastestLap,
+  formatDuration,
+  formatDurationPrecise,
+} from '@/utils/timing';
 
 function makeLap(durationMs: number, overriddenMs?: number): Lap {
   return {
@@ -20,100 +21,103 @@ function makeLap(durationMs: number, overriddenMs?: number): Lap {
     startMs: 0,
     finishMs: durationMs,
     durationMs,
-    override: overriddenMs !== undefined ? {
-      originalDurationMs: durationMs,
-      overriddenDurationMs: overriddenMs,
-      editedAtMs: Date.now(),
-    } : undefined,
-  }
+    override:
+      overriddenMs !== undefined
+        ? {
+            originalDurationMs: durationMs,
+            overriddenDurationMs: overriddenMs,
+            editedAtMs: Date.now(),
+          }
+        : undefined,
+  };
 }
 
 describe('formatDuration', () => {
   it('formats seconds only', () => {
-    expect(formatDuration(45_000)).toBe('00:45')
-  })
+    expect(formatDuration(45_000)).toBe('00:45');
+  });
 
   it('formats minutes and seconds', () => {
-    expect(formatDuration(90_500)).toBe('01:30')
-  })
+    expect(formatDuration(90_500)).toBe('01:30');
+  });
 
   it('formats hours', () => {
-    expect(formatDuration(3_661_000)).toBe('1:01:01')
-  })
+    expect(formatDuration(3_661_000)).toBe('1:01:01');
+  });
 
   it('clamps negative to zero', () => {
-    expect(formatDuration(-5000)).toBe('00:00')
-  })
-})
+    expect(formatDuration(-5000)).toBe('00:00');
+  });
+});
 
 describe('formatDurationPrecise', () => {
   it('includes tenths', () => {
-    expect(formatDurationPrecise(65_300)).toBe('01:05.3')
-  })
+    expect(formatDurationPrecise(65_300)).toBe('01:05.3');
+  });
 
   it('shows zero tenths', () => {
-    expect(formatDurationPrecise(60_000)).toBe('01:00.0')
-  })
-})
+    expect(formatDurationPrecise(60_000)).toBe('01:00.0');
+  });
+});
 
 describe('elapsedMs', () => {
   it('subtracts start and paused time', () => {
-    expect(elapsedMs(1000, 500, 3000)).toBe(1500)
-  })
+    expect(elapsedMs(1000, 500, 3000)).toBe(1500);
+  });
 
   it('returns correct elapsed with no pause', () => {
-    expect(elapsedMs(0, 0, 5000)).toBe(5000)
-  })
-})
+    expect(elapsedMs(0, 0, 5000)).toBe(5000);
+  });
+});
 
 describe('computeLapDuration', () => {
   it('returns recorded duration when no override', () => {
-    const lap = makeLap(60_000)
-    expect(computeLapDuration(lap)).toBe(60_000)
-  })
+    const lap = makeLap(60_000);
+    expect(computeLapDuration(lap)).toBe(60_000);
+  });
 
   it('returns override when present', () => {
-    const lap = makeLap(60_000, 58_000)
-    expect(computeLapDuration(lap)).toBe(58_000)
-  })
-})
+    const lap = makeLap(60_000, 58_000);
+    expect(computeLapDuration(lap)).toBe(58_000);
+  });
+});
 
 describe('fastestLap', () => {
   it('returns null for empty array', () => {
-    expect(fastestLap([])).toBeNull()
-  })
+    expect(fastestLap([])).toBeNull();
+  });
 
   it('returns the single lap', () => {
-    const lap = makeLap(60_000)
-    expect(fastestLap([lap])).toBe(lap)
-  })
+    const lap = makeLap(60_000);
+    expect(fastestLap([lap])).toBe(lap);
+  });
 
   it('finds the fastest', () => {
-    const slow = makeLap(90_000)
-    const fast = makeLap(55_000)
-    const med = makeLap(70_000)
-    expect(fastestLap([slow, fast, med])).toBe(fast)
-  })
+    const slow = makeLap(90_000);
+    const fast = makeLap(55_000);
+    const med = makeLap(70_000);
+    expect(fastestLap([slow, fast, med])).toBe(fast);
+  });
 
   it('uses override duration when comparing', () => {
-    const a = makeLap(60_000)                // 60s recorded
-    const b = makeLap(90_000, 50_000)        // 90s recorded, 50s override
-    expect(fastestLap([a, b])).toBe(b)
-  })
-})
+    const a = makeLap(60_000); // 60s recorded
+    const b = makeLap(90_000, 50_000); // 90s recorded, 50s override
+    expect(fastestLap([a, b])).toBe(b);
+  });
+});
 
 describe('averageLapMs', () => {
   it('returns null for empty array', () => {
-    expect(averageLapMs([])).toBeNull()
-  })
+    expect(averageLapMs([])).toBeNull();
+  });
 
   it('computes average', () => {
-    const laps = [makeLap(60_000), makeLap(80_000)]
-    expect(averageLapMs(laps)).toBe(70_000)
-  })
+    const laps = [makeLap(60_000), makeLap(80_000)];
+    expect(averageLapMs(laps)).toBe(70_000);
+  });
 
   it('rounds to nearest ms', () => {
-    const laps = [makeLap(60_000), makeLap(61_000), makeLap(62_000)]
-    expect(averageLapMs(laps)).toBe(61_000)
-  })
-})
+    const laps = [makeLap(60_000), makeLap(61_000), makeLap(62_000)];
+    expect(averageLapMs(laps)).toBe(61_000);
+  });
+});

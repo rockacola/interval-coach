@@ -1,14 +1,12 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import tailwindcss from '@tailwindcss/vite'
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url';
+
+import tailwindcss from '@tailwindcss/vite';
+import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '/interval-coach/',
-  plugins: [
-    tailwindcss(),
-    vue(),
-  ],
+  plugins: [tailwindcss(), vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -24,4 +22,4 @@ export default defineConfig({
       include: ['src/stores/**', 'src/utils/**'],
     },
   },
-})
+});

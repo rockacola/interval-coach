@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Prevent text size adjustment on orientation change (iOS) */
 html {

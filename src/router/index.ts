@@ -1,7 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import LiveSessionView from '@/views/LiveSessionView.vue'
-import SummaryView from '@/views/SummaryView.vue'
-import SetupView from '@/views/SetupView.vue'
+import { createRouter, createWebHashHistory } from 'vue-router';
+
+import LiveSessionView from '@/views/LiveSessionView.vue';
+import SetupView from '@/views/SetupView.vue';
+import SummaryView from '@/views/SummaryView.vue';
 
 const router = createRouter({
   // Hash history avoids 404s on GitHub Pages without server config
@@ -23,6 +24,6 @@ const router = createRouter({
       component: SummaryView,
     },
   ],
-})
+});
 
-export default router
+export default router;

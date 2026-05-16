@@ -1,6 +1,6 @@
-import { setActivePinia, createPinia } from 'pinia'
-import { beforeEach } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia';
+import { beforeEach } from 'vitest';
 
 beforeEach(() => {
-  setActivePinia(createPinia())
-})
+  setActivePinia(createPinia());
+});
