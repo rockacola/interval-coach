@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import AppButton from '@/components/AppButton.vue';
 import GhostButton from '@/components/GhostButton.vue';
@@ -16,6 +16,8 @@ const props = defineProps<{
   isLast: boolean;
   runner: Runner;
 }>();
+
+const isCollapsed = ref(true);
 
 const runnerStore = useRunnerStore();
 const settingsStore = useSettingsStore();
@@ -79,6 +81,14 @@ function onBibInput(event: Event) {
   <div class="px-2 py-3 rounded-lg bg-slate-800 space-y-2">
     <!-- Name row -->
     <div class="flex items-center gap-2">
+      <button
+        v-if="!editMode"
+        class="text-slate-500 hover:text-slate-300 text-xs shrink-0 cursor-pointer w-4"
+        :aria-label="isCollapsed ? 'Expand runner' : 'Collapse runner'"
+        @click="isCollapsed = !isCollapsed"
+      >
+        {{ isCollapsed ? '▶' : '▼' }}
+      </button>
       <span class="flex items-center gap-2 min-w-0 flex-1">
         <template v-if="editMode">
           <input
@@ -98,6 +108,13 @@ function onBibInput(event: Event) {
             >#{{ runner.bibNumber }}</span
           >
           <span class="font-medium truncate">{{ runner.name }}</span>
+          <span
+            v-if="isCollapsed && (intervals.length || isRunning)"
+            class="text-xs shrink-0"
+            :class="isRunning ? 'text-emerald-400' : 'text-slate-400'"
+          >
+            {{ isRunning ? `lap ${intervals.length + 1}…` : `${intervals.length} laps` }}
+          </span>
         </template>
       </span>
       <!-- Sort buttons: edit mode only, in the name row -->
@@ -145,7 +162,7 @@ function onBibInput(event: Event) {
     </div>
 
     <!-- Recorded intervals -->
-    <ul v-if="intervals.length" class="space-y-1 border-t border-slate-700 pt-2">
+    <ul v-if="intervals.length && !isCollapsed" class="space-y-1 border-t border-slate-700 pt-2">
       <li
         v-for="interval in intervals"
         :key="interval.id"
