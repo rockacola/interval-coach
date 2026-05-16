@@ -8,7 +8,7 @@ import { useTimingStore } from '@/stores/timingStore';
 import type { Runner } from '@/types';
 import { formatStopwatch, formatStopwatchShort } from '@/utils/timing';
 
-const props = defineProps<{ editMode: boolean; runner: Runner }>();
+const props = defineProps<{ editMode: boolean; isFirst: boolean; isLast: boolean; runner: Runner }>();
 
 const runnerStore = useRunnerStore();
 const settingsStore = useSettingsStore();
@@ -57,7 +57,7 @@ function onBibInput(event: Event) {
 <template>
   <div class="px-4 py-3 rounded-lg bg-slate-800 space-y-2">
     <!-- Name + stopwatch + buttons -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gap-2">
       <span class="flex items-center gap-3">
         <span class="flex items-center gap-2">
           <template v-if="editMode">
@@ -96,14 +96,31 @@ function onBibInput(event: Event) {
         >
           {{ isRunning ? 'Stop' : 'Start' }}
         </button>
-        <button
-          v-if="editMode"
-          class="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white px-2 py-1 rounded text-sm cursor-pointer"
-          aria-label="Remove runner"
-          @click="remove"
-        >
-          ✕
-        </button>
+        <template v-if="editMode">
+          <button
+            :disabled="isFirst"
+            class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
+            aria-label="Move runner up"
+            @click="runnerStore.moveRunnerUp(runner.id)"
+          >
+            ↑
+          </button>
+          <button
+            :disabled="isLast"
+            class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
+            aria-label="Move runner down"
+            @click="runnerStore.moveRunnerDown(runner.id)"
+          >
+            ↓
+          </button>
+          <button
+            class="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white px-2 py-1 rounded text-sm cursor-pointer"
+            aria-label="Remove runner"
+            @click="remove"
+          >
+            ✕
+          </button>
+        </template>
       </div>
     </div>
 

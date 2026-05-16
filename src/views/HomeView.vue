@@ -77,8 +77,16 @@ function addRunner(name: string, bib: string) {
       <label class="text-sm font-medium text-slate-300">Runners</label>
       <AddRunnerForm @add="addRunner" />
       <ul v-if="runnerStore.sortedRunners.length" class="space-y-2">
-        <li v-for="runner in runnerStore.sortedRunners" :key="runner.id">
-          <RunnerCard :runner="runner" :edit-mode="editMode" />
+        <li
+          v-for="(runner, idx) in runnerStore.sortedRunners"
+          :key="runner.id"
+        >
+          <RunnerCard
+            :runner="runner"
+            :edit-mode="editMode"
+            :is-first="idx === 0"
+            :is-last="idx === runnerStore.sortedRunners.length - 1"
+          />
         </li>
       </ul>
       <p v-else class="text-slate-500 text-sm text-center py-4">

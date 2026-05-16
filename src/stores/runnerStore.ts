@@ -62,6 +62,28 @@ export const useRunnerStore = defineStore(
       runner.deleted = false;
     }
 
+    function moveRunnerUp(id: RunnerId): void {
+      const sorted = sortedRunners.value;
+      const idx = sorted.findIndex((r) => r.id === id);
+      if (idx <= 0) {
+        return;
+      }
+      const ids = sorted.map((r) => r.id);
+      [ids[idx - 1], ids[idx]] = [ids[idx], ids[idx - 1]];
+      reorderRunners(ids);
+    }
+
+    function moveRunnerDown(id: RunnerId): void {
+      const sorted = sortedRunners.value;
+      const idx = sorted.findIndex((r) => r.id === id);
+      if (idx === -1 || idx >= sorted.length - 1) {
+        return;
+      }
+      const ids = sorted.map((r) => r.id);
+      [ids[idx], ids[idx + 1]] = [ids[idx + 1], ids[idx]];
+      reorderRunners(ids);
+    }
+
     function reorderRunners(orderedIds: RunnerId[]): void {
       orderedIds.forEach((id, index) => {
         const runner = runners.value.find((r) => r.id === id);
@@ -106,6 +128,8 @@ export const useRunnerStore = defineStore(
       updateRunner,
       removeRunner,
       restoreRunner,
+      moveRunnerUp,
+      moveRunnerDown,
       reorderRunners,
       getRuntimeState,
       setRunnerState,

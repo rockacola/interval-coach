@@ -24,9 +24,9 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 - [x] Soft-delete runners (sets `Runner.deleted`; runner identity preserved)
 - [x] Restore soft-deleted runners via collapsible removed list (`RemovedRunnersList`)
 - [x] Per-runner start/stop timer with recorded interval history (`RunnerCard`)
-- [ ] Drag-and-drop runner reordering
-  - Use native HTML5 drag API or a lightweight library (e.g. `vue-draggable-plus`)
-  - Call `runnerStore.reorderRunners()` on drop
+- [x] Runner reordering via up/down buttons in edit mode
+  - ↑/↓ buttons per runner card, disabled at list boundaries
+  - `runnerStore.moveRunnerUp()` / `moveRunnerDown()` swap adjacent `sortOrder` values
 - [x] Edit runner name inline — global edit-mode toggle (pencil icon in header) turns name into live input
 
 ---
