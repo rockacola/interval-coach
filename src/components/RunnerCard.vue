@@ -115,6 +115,29 @@ function onBibInput(event: Event) {
       >
         <span class="text-slate-500 w-6 text-right">{{ interval.index }}</span>
         <span class="font-mono">{{ formatTime(interval.stopMs - interval.startMs) }}</span>
+        <template v-if="editMode">
+          <span class="flex items-center gap-1">
+            <button
+              class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer font-bold text-base"
+              @click="timingStore.adjustRunnerIntervalStop(interval.id, -1000)"
+            >
+              −
+            </button>
+            <button
+              class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer font-bold text-base"
+              @click="timingStore.adjustRunnerIntervalStop(interval.id, +1000)"
+            >
+              +
+            </button>
+            <button
+              class="text-red-500 hover:text-red-400 hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer text-xs"
+              aria-label="Delete interval"
+              @click="timingStore.removeRunnerInterval(interval.id)"
+            >
+              ✕
+            </button>
+          </span>
+        </template>
       </li>
     </ul>
   </div>

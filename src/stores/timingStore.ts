@@ -267,6 +267,18 @@ export const useTimingStore = defineStore(
       return runnerIntervals.value.filter((i) => i.runnerId === runnerId);
     }
 
+    function adjustRunnerIntervalStop(id: string, deltaMs: number): void {
+      const interval = runnerIntervals.value.find((i) => i.id === id);
+      if (!interval) return;
+      interval.stopMs = Math.max(interval.startMs, interval.stopMs + deltaMs);
+    }
+
+    function removeRunnerInterval(id: string): void {
+      const idx = runnerIntervals.value.findIndex((i) => i.id === id);
+      if (idx === -1) return;
+      runnerIntervals.value.splice(idx, 1);
+    }
+
     // ─── Reset ────────────────────────────────────────────────────────────────
 
     function clearAll(): void {
@@ -301,6 +313,8 @@ export const useTimingStore = defineStore(
       startRunnerTimer,
       stopRunnerTimer,
       intervalsForRunner,
+      adjustRunnerIntervalStop,
+      removeRunnerInterval,
       clearAll,
     };
   },
