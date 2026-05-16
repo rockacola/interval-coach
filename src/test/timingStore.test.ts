@@ -113,6 +113,123 @@ describe('timingStore', () => {
     expect(lap.override).toBeUndefined();
   });
 
+  it('runnerFastestLap returns the shortest lap for a runner', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+
+    timing.startInterval(SESSION_ID, 0);
+    timing.recordFinish(runner.id, SESSION_ID, 70_000);
+    timing.startInterval(SESSION_ID, 90_000);
+    timing.recordFinish(runner.id, SESSION_ID, 145_000); // 55s
+
+    expect(timing.runnerFastestLap(runner.id)?.durationMs).toBe(55_000);
+  });
+
+  it('runnerFastestLap returns null with no laps', () => {
+    const runner = setupRunner();
+    expect(useTimingStore().runnerFastestLap(runner.id)).toBeNull();
+  });
+
+  it('runnerAverageLapMs returns mean of runner laps', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+
+    timing.startInterval(SESSION_ID, 0);
+    timing.recordFinish(runner.id, SESSION_ID, 60_000);
+    timing.startInterval(SESSION_ID, 80_000);
+    timing.recordFinish(runner.id, SESSION_ID, 140_000); // 60s again
+
+    expect(timing.runnerAverageLapMs(runner.id)).toBe(60_000);
+  });
+
+  it('runnerAverageLapMs returns null with no laps', () => {
+    const runner = setupRunner();
+    expect(useTimingStore().runnerAverageLapMs(runner.id)).toBeNull();
+  });
+
+  it('startRunnerTimer sets runner state to running', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 1_000);
+    expect(useRunnerStore().getRuntimeState(runner.id)?.state).toBe('running');
+  });
+
+  it('startRunnerTimer is a no-op if already running', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 1_000);
+    timing.startRunnerTimer(runner.id, 2_000);
+    expect(useRunnerStore().getRuntimeState(runner.id)?.currentIntervalStartMs).toBe(1_000);
+  });
+
+  it('stopRunnerTimer records a RunnerInterval and returns it', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 0);
+    const interval = timing.stopRunnerTimer(runner.id, 30_000);
+    expect(interval).not.toBeNull();
+    expect(interval!.startMs).toBe(0);
+    expect(interval!.stopMs).toBe(30_000);
+    expect(interval!.runnerId).toBe(runner.id);
+  });
+
+  it('stopRunnerTimer returns null if runner is not running', () => {
+    const runner = setupRunner();
+    expect(useTimingStore().stopRunnerTimer(runner.id, 1_000)).toBeNull();
+  });
+
+  it('intervalsForRunner returns only that runner intervals', () => {
+    const alice = setupRunner('Alice');
+    const bob = useRunnerStore().addRunner('Bob');
+    const timing = useTimingStore();
+    timing.startRunnerTimer(alice.id, 0);
+    timing.stopRunnerTimer(alice.id, 30_000);
+    timing.startRunnerTimer(bob.id, 0);
+    timing.stopRunnerTimer(bob.id, 25_000);
+    expect(timing.intervalsForRunner(alice.id)).toHaveLength(1);
+    expect(timing.intervalsForRunner(bob.id)).toHaveLength(1);
+  });
+
+  it('adjustRunnerIntervalStop shifts stopMs by delta', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 0);
+    const interval = timing.stopRunnerTimer(runner.id, 30_000)!;
+    timing.adjustRunnerIntervalStop(interval.id, 5_000);
+    expect(interval.stopMs).toBe(35_000);
+  });
+
+  it('adjustRunnerIntervalStop does not go below startMs', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 10_000);
+    const interval = timing.stopRunnerTimer(runner.id, 11_000)!;
+    timing.adjustRunnerIntervalStop(interval.id, -9_000);
+    expect(interval.stopMs).toBe(10_000);
+  });
+
+  it('removeRunnerInterval deletes the interval', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startRunnerTimer(runner.id, 0);
+    const interval = timing.stopRunnerTimer(runner.id, 30_000)!;
+    timing.removeRunnerInterval(interval.id);
+    expect(timing.intervalsForRunner(runner.id)).toHaveLength(0);
+  });
+
+  it('clearAll resets all timing state', () => {
+    const runner = setupRunner();
+    const timing = useTimingStore();
+    timing.startInterval(SESSION_ID, 0);
+    timing.recordFinish(runner.id, SESSION_ID, 60_000);
+    timing.clearAll();
+    expect(timing.events).toHaveLength(0);
+    expect(timing.laps).toHaveLength(0);
+    expect(timing.intervals).toHaveLength(0);
+    expect(timing.currentIntervalId).toBeNull();
+    expect(timing.currentIntervalNumber).toBe(0);
+  });
+
   it('lapsForRunner returns only that runner s laps', () => {
     const alice = setupRunner('Alice');
     const bob = useRunnerStore().addRunner('Bob');

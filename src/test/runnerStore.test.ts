@@ -90,6 +90,11 @@ describe('runnerStore', () => {
       const store = useRunnerStore();
       expect(() => store.removeRunner('ghost')).not.toThrow();
     });
+
+    it('restoreRunner is a no-op for unknown id', () => {
+      const store = useRunnerStore();
+      expect(() => store.restoreRunner('ghost')).not.toThrow();
+    });
   });
 
   describe('updateRunner', () => {
@@ -146,6 +151,30 @@ describe('runnerStore', () => {
       const bob = store.addRunner('Bob');
       store.moveRunnerDown(bob.id);
       expect(store.sortedRunners.map((r) => r.name)).toEqual(['Alice', 'Bob']);
+    });
+  });
+
+  describe('resetAllRuntimeStates', () => {
+    it('resets all runners back to idle', () => {
+      const store = useRunnerStore();
+      const a = store.addRunner('Alice');
+      const b = store.addRunner('Bob');
+      store.setRunnerState(a.id, { state: 'running' });
+      store.setRunnerState(b.id, { state: 'paused' });
+      store.resetAllRuntimeStates();
+      expect(store.getRuntimeState(a.id)?.state).toBe('idle');
+      expect(store.getRuntimeState(b.id)?.state).toBe('idle');
+    });
+  });
+
+  describe('clearAll', () => {
+    it('removes all runners and runtime states', () => {
+      const store = useRunnerStore();
+      store.addRunner('Alice');
+      store.addRunner('Bob');
+      store.clearAll();
+      expect(store.runners).toHaveLength(0);
+      expect(store.sortedRunners).toHaveLength(0);
     });
   });
 
