@@ -1,13 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import type { Lap } from '@/types';
+import type { Lap, TimingEvent } from '@/types';
 import {
   averageLapMs,
   computeLapDuration,
   elapsedMs,
   fastestLap,
+  findEvent,
   formatDuration,
   formatDurationPrecise,
+  formatStopwatch,
+  formatStopwatchShort,
 } from '@/utils/timing';
 
 function makeLap(durationMs: number, overriddenMs?: number): Lap {
@@ -119,5 +122,68 @@ describe('averageLapMs', () => {
   it('rounds to nearest ms', () => {
     const laps = [makeLap(60_000), makeLap(61_000), makeLap(62_000)];
     expect(averageLapMs(laps)).toBe(61_000);
+  });
+});
+
+describe('formatStopwatch', () => {
+  it('formats HH:mm:ss.SSS', () => {
+    expect(formatStopwatch(65_432)).toBe('00:01:05.432');
+  });
+
+  it('pads hours, minutes, seconds, milliseconds', () => {
+    expect(formatStopwatch(3_661_001)).toBe('01:01:01.001');
+  });
+
+  it('formats sub-second correctly', () => {
+    expect(formatStopwatch(432)).toBe('00:00:00.432');
+  });
+
+  it('formats zero as all zeroes', () => {
+    expect(formatStopwatch(0)).toBe('00:00:00.000');
+  });
+
+  it('clamps negative to zero', () => {
+    expect(formatStopwatch(-1000)).toBe('00:00:00.000');
+  });
+});
+
+describe('formatStopwatchShort', () => {
+  it('formats mm:ss.SSS', () => {
+    expect(formatStopwatchShort(65_432)).toBe('01:05.432');
+  });
+
+  it('formats sub-second correctly', () => {
+    expect(formatStopwatchShort(432)).toBe('00:00.432');
+  });
+
+  it('formats zero as all zeroes', () => {
+    expect(formatStopwatchShort(0)).toBe('00:00.000');
+  });
+
+  it('clamps negative to zero', () => {
+    expect(formatStopwatchShort(-500)).toBe('00:00.000');
+  });
+
+  it('wraps minutes past 60 without hour segment', () => {
+    expect(formatStopwatchShort(3_660_000)).toBe('61:00.000');
+  });
+});
+
+describe('findEvent', () => {
+  function makeEvent(id: string): TimingEvent {
+    return { id, kind: 'RUNNER_FINISH', timestampMs: 0, sessionId: 's1' };
+  }
+
+  it('returns the matching event', () => {
+    const e = makeEvent('abc');
+    expect(findEvent([makeEvent('x'), e, makeEvent('y')], 'abc')).toBe(e);
+  });
+
+  it('returns undefined when not found', () => {
+    expect(findEvent([makeEvent('a'), makeEvent('b')], 'z')).toBeUndefined();
+  });
+
+  it('returns undefined for empty array', () => {
+    expect(findEvent([], 'any')).toBeUndefined();
   });
 });
