@@ -7,7 +7,7 @@ import RunnerReportCard from '@/components/RunnerReportCard.vue';
 import { useRunnerStore } from '@/stores/runnerStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
-import { kmToDisplay } from '@/utils/distance';
+import { formatDistance } from '@/utils/distance';
 
 const router = useRouter();
 const runnerStore = useRunnerStore();
@@ -41,7 +41,7 @@ const removedRunners = computed(() =>
     <div v-if="timingStore.intervalDistanceKm !== null" class="flex items-center justify-between">
       <span class="text-sm font-medium text-slate-300">Interval distance</span>
       <span class="text-sm text-white">
-        {{ kmToDisplay(timingStore.intervalDistanceKm!, settingsStore.distanceUnit) }}
+        {{ formatDistance(timingStore.intervalDistanceKm!, settingsStore.distanceUnit) }}
         {{ settingsStore.distanceUnit }}
       </span>
     </div>

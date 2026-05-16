@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { displayToKm, formatPace, kmToDisplay } from '@/utils/distance';
+import { displayToKm, formatDistance, formatPace, kmToDisplay } from '@/utils/distance';
 
 describe('kmToDisplay', () => {
   it('returns km unchanged when unit is km', () => {
@@ -28,6 +28,24 @@ describe('displayToKm', () => {
   it('round-trips with kmToDisplay', () => {
     const original = 7.5;
     expect(displayToKm(kmToDisplay(original, 'mi'), 'mi')).toBeCloseTo(original, 5);
+  });
+});
+
+describe('formatDistance', () => {
+  it('returns km as-is when unit is km', () => {
+    expect(formatDistance(5, 'km')).toBe('5');
+  });
+
+  it('converts and rounds to 2 decimal places', () => {
+    expect(formatDistance(1, 'mi')).toBe('0.62');
+  });
+
+  it('strips trailing zeros', () => {
+    expect(formatDistance(1.60934, 'mi')).toBe('1');
+  });
+
+  it('rounds 5km to miles correctly', () => {
+    expect(formatDistance(5, 'mi')).toBe('3.11');
   });
 });
 

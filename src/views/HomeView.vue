@@ -11,7 +11,7 @@ import SettingsModal from '@/components/SettingsModal.vue';
 import { useRunnerStore } from '@/stores/runnerStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
-import { displayToKm, kmToDisplay } from '@/utils/distance';
+import { displayToKm, formatDistance, kmToDisplay } from '@/utils/distance';
 
 const router = useRouter();
 const runnerStore = useRunnerStore();
@@ -23,7 +23,9 @@ const editMode = ref(false);
 const distanceInput = computed({
   get() {
     return timingStore.intervalDistanceKm !== null
-      ? kmToDisplay(timingStore.intervalDistanceKm, settingsStore.distanceUnit)
+      ? parseFloat(
+          kmToDisplay(timingStore.intervalDistanceKm, settingsStore.distanceUnit).toFixed(2)
+        )
       : null;
   },
   set(value: number | null) {
@@ -124,7 +126,10 @@ function startAllIdleRunners() {
     </div>
     <div v-else-if="distanceInput !== null" class="flex items-center justify-between">
       <span class="text-sm font-medium text-slate-300">Interval distance</span>
-      <span class="text-sm text-white">{{ distanceInput }} {{ settingsStore.distanceUnit }}</span>
+      <span class="text-sm text-white"
+        >{{ formatDistance(timingStore.intervalDistanceKm!, settingsStore.distanceUnit) }}
+        {{ settingsStore.distanceUnit }}</span
+      >
     </div>
 
     <div class="space-y-3">
