@@ -77,10 +77,7 @@ function addRunner(name: string, bib: string) {
       <label class="text-sm font-medium text-slate-300">Runners</label>
       <AddRunnerForm @add="addRunner" />
       <ul v-if="runnerStore.sortedRunners.length" class="space-y-2">
-        <li
-          v-for="(runner, idx) in runnerStore.sortedRunners"
-          :key="runner.id"
-        >
+        <li v-for="(runner, idx) in runnerStore.sortedRunners" :key="runner.id">
           <RunnerCard
             :runner="runner"
             :edit-mode="editMode"

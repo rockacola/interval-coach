@@ -8,7 +8,12 @@ import { useTimingStore } from '@/stores/timingStore';
 import type { Runner } from '@/types';
 import { formatStopwatch, formatStopwatchShort } from '@/utils/timing';
 
-const props = defineProps<{ editMode: boolean; isFirst: boolean; isLast: boolean; runner: Runner }>();
+const props = defineProps<{
+  editMode: boolean;
+  isFirst: boolean;
+  isLast: boolean;
+  runner: Runner;
+}>();
 
 const runnerStore = useRunnerStore();
 const settingsStore = useSettingsStore();
