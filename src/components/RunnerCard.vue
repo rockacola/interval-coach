@@ -6,7 +6,7 @@ import { useRunnerStore } from '@/stores/runnerStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
 import type { Runner } from '@/types';
-import { formatStopwatch, formatStopwatchShort } from '@/utils/timing';
+import { formatDuration, formatStopwatch, formatStopwatchShort } from '@/utils/timing';
 
 const props = defineProps<{
   editMode: boolean;
@@ -35,6 +35,12 @@ const elapsedDisplay = computed(() => {
 });
 
 const intervals = computed(() => timingStore.intervalsForRunner(props.runner.id));
+
+const restDisplay = computed(() => {
+  if (isRunning.value || !intervals.value.length) return null;
+  const lastStop = intervals.value[intervals.value.length - 1].stopMs;
+  return formatDuration(now.value - lastStop);
+});
 
 function toggleTimer() {
   if (isRunning.value) {
@@ -89,6 +95,9 @@ function onBibInput(event: Event) {
       <div class="flex items-center gap-2">
         <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{
           elapsedDisplay
+        }}</span>
+        <span v-else-if="restDisplay" class="font-mono text-sm text-slate-400">{{
+          restDisplay
         }}</span>
         <button
           class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white"
