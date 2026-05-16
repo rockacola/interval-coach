@@ -3,24 +3,30 @@ import { computed } from 'vue';
 
 import { useNow } from '@/composables/useNow';
 import { useRunnerStore } from '@/stores/runnerStore';
+import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
 import type { Runner } from '@/types';
-import { formatStopwatch } from '@/utils/timing';
+import { formatStopwatch, formatStopwatchShort } from '@/utils/timing';
 
 const props = defineProps<{ runner: Runner }>();
 
 const runnerStore = useRunnerStore();
+const settingsStore = useSettingsStore();
 const timingStore = useTimingStore();
 const { now } = useNow();
 
 const isRunning = computed(() => runnerStore.getRuntimeState(props.runner.id)?.state === 'running');
 
+const formatTime = computed(() =>
+  settingsStore.timeFormat === 'HH:mm:ss.SSS' ? formatStopwatch : formatStopwatchShort
+);
+
 const elapsedDisplay = computed(() => {
   const state = runnerStore.getRuntimeState(props.runner.id);
   if (!state || state.currentIntervalStartMs === null) {
-    return '00:00:00.000';
+    return settingsStore.timeFormat === 'HH:mm:ss.SSS' ? '00:00:00.000' : '00:00.000';
   }
-  return formatStopwatch(now.value - state.currentIntervalStartMs);
+  return formatTime.value(now.value - state.currentIntervalStartMs);
 });
 
 const intervals = computed(() => timingStore.intervalsForRunner(props.runner.id));
@@ -83,7 +89,7 @@ function remove() {
         class="flex items-center gap-3 text-sm text-slate-300"
       >
         <span class="text-slate-500 w-6 text-right">{{ interval.index }}</span>
-        <span class="font-mono">{{ formatStopwatch(interval.stopMs - interval.startMs) }}</span>
+        <span class="font-mono">{{ formatTime(interval.stopMs - interval.startMs) }}</span>
       </li>
     </ul>
   </div>

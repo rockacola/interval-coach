@@ -40,12 +40,13 @@ Key relationships:
 
 ## State stores
 
-| Store          | Owns                                   | Persisted        |
-| -------------- | -------------------------------------- | ---------------- |
-| `sessionStore` | Active `Session` record                | yes              |
-| `runnerStore`  | `Runner[]`, `RunnerRuntimeState` map   | yes              |
-| `timingStore`  | `TimingEvent[]`, `Interval[]`, `Lap[]` | yes              |
-| `historyStore` | Archived session snapshots             | yes (future use) |
+| Store           | Owns                                   | Persisted        |
+| --------------- | -------------------------------------- | ---------------- |
+| `sessionStore`  | Active `Session` record                | yes              |
+| `runnerStore`   | `Runner[]`, `RunnerRuntimeState` map   | yes              |
+| `timingStore`   | `TimingEvent[]`, `Interval[]`, `Lap[]` | yes              |
+| `historyStore`  | Archived session snapshots             | yes (future use) |
+| `settingsStore` | User preferences (e.g. time format)    | yes              |
 
 All stores use `pinia-plugin-persistedstate` with `localStorage`. On page load, all state is restored before the Vue app mounts, so the live session resumes exactly.
 

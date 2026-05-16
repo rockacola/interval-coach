@@ -42,7 +42,7 @@ npm run preview      # preview production build locally
 ```text
 src/
 ├── types/          # TypeScript models (Session, Runner, Lap, TimingEvent, …)
-├── stores/         # Pinia stores (session, runner, timing, history)
+├── stores/         # Pinia stores (session, runner, timing, history, settings)
 ├── utils/          # Pure timing utilities (deterministic, fully tested)
 ├── views/          # Page-level Vue components
 ├── components/     # Shared UI components
