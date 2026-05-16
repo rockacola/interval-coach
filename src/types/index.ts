@@ -97,6 +97,16 @@ export interface Session {
   endedAtMs: number | null;
 }
 
+// ─── Runner interval (recorded when timer is stopped) ────────────────────────
+
+export interface RunnerInterval {
+  id: string;
+  index: number; // 1-based, per runner
+  runnerId: RunnerId;
+  startMs: number;
+  stopMs: number;
+}
+
 // ─── Session summary (derived, not persisted) ─────────────────────────────
 
 export interface RunnerSummary {

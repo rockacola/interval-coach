@@ -8,6 +8,7 @@ import type {
   LapId,
   LapOverride,
   RunnerId,
+  RunnerInterval,
   SessionId,
   TimingEvent,
   TimingEventKind,
@@ -22,6 +23,7 @@ export const useTimingStore = defineStore(
     const events = ref<TimingEvent[]>([]);
     const intervals = ref<Interval[]>([]);
     const laps = ref<Lap[]>([]);
+    const runnerIntervals = ref<RunnerInterval[]>([]);
 
     const currentIntervalId = ref<IntervalId | null>(null);
     const currentIntervalNumber = ref(0);
@@ -225,12 +227,53 @@ export const useTimingStore = defineStore(
       return averageLapMs(lapsForRunner(runnerId));
     }
 
+    // ─── Per-runner timer (simple start/stop) ────────────────────────────────
+
+    function startRunnerTimer(runnerId: RunnerId, timestampMs?: number): void {
+      const ts = timestampMs ?? nowMs();
+      const state = runnerStore.getRuntimeState(runnerId);
+      if (!state || state.state === 'running') {
+        return;
+      }
+      runnerStore.setRunnerState(runnerId, {
+        state: 'running',
+        currentIntervalStartMs: ts,
+      });
+    }
+
+    function stopRunnerTimer(runnerId: RunnerId, timestampMs?: number): RunnerInterval | null {
+      const ts = timestampMs ?? nowMs();
+      const state = runnerStore.getRuntimeState(runnerId);
+      if (!state || state.state !== 'running' || state.currentIntervalStartMs === null) {
+        return null;
+      }
+      const index = runnerIntervals.value.filter((i) => i.runnerId === runnerId).length + 1;
+      const interval: RunnerInterval = {
+        id: generateId(),
+        index,
+        runnerId,
+        startMs: state.currentIntervalStartMs,
+        stopMs: ts,
+      };
+      runnerIntervals.value.push(interval);
+      runnerStore.setRunnerState(runnerId, {
+        state: 'idle',
+        currentIntervalStartMs: null,
+      });
+      return interval;
+    }
+
+    function intervalsForRunner(runnerId: RunnerId): RunnerInterval[] {
+      return runnerIntervals.value.filter((i) => i.runnerId === runnerId);
+    }
+
     // ─── Reset ────────────────────────────────────────────────────────────────
 
     function clearAll(): void {
       events.value = [];
       intervals.value = [];
       laps.value = [];
+      runnerIntervals.value = [];
       currentIntervalId.value = null;
       currentIntervalNumber.value = 0;
     }
@@ -239,6 +282,7 @@ export const useTimingStore = defineStore(
       events,
       intervals,
       laps,
+      runnerIntervals,
       currentIntervalId,
       currentIntervalNumber,
       currentInterval,
@@ -254,6 +298,9 @@ export const useTimingStore = defineStore(
       clearOverride,
       runnerFastestLap,
       runnerAverageLapMs,
+      startRunnerTimer,
+      stopRunnerTimer,
+      intervalsForRunner,
       clearAll,
     };
   },
