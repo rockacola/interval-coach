@@ -8,12 +8,28 @@ import RemovedRunnersList from '@/components/RemovedRunnersList.vue';
 import RunnerCard from '@/components/RunnerCard.vue';
 import SettingsModal from '@/components/SettingsModal.vue';
 import { useRunnerStore } from '@/stores/runnerStore';
+import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
+import { displayToKm, kmToDisplay } from '@/utils/distance';
 
 const runnerStore = useRunnerStore();
+const settingsStore = useSettingsStore();
 const timingStore = useTimingStore();
 const settingsOpen = ref(false);
 const editMode = ref(false);
+
+const distanceInput = computed({
+  get() {
+    return timingStore.intervalDistanceKm !== null
+      ? kmToDisplay(timingStore.intervalDistanceKm, settingsStore.distanceUnit)
+      : null;
+  },
+  set(value: number | null) {
+    timingStore.setIntervalDistance(
+      value !== null && value > 0 ? displayToKm(value, settingsStore.distanceUnit) : null
+    );
+  },
+});
 
 const hasIdleRunners = computed(() =>
   runnerStore.sortedRunners.some((r) => runnerStore.getRuntimeState(r.id)?.state !== 'running')
@@ -84,6 +100,30 @@ function startAllIdleRunners() {
     </div>
 
     <SettingsModal v-if="settingsOpen" @close="settingsOpen = false" />
+
+    <!-- Interval distance -->
+    <div v-if="editMode" class="flex items-center justify-between">
+      <label class="text-sm font-medium text-slate-300" for="interval-distance">
+        Interval distance
+      </label>
+      <div class="flex items-center gap-2">
+        <input
+          id="interval-distance"
+          :value="distanceInput"
+          class="w-24 rounded-lg bg-slate-700 border border-slate-600 px-3 py-1.5 text-sm text-right text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+          min="0"
+          placeholder="—"
+          step="any"
+          type="number"
+          @change="distanceInput = ($event.target as HTMLInputElement).valueAsNumber || null"
+        />
+        <span class="text-sm text-slate-400 w-5">{{ settingsStore.distanceUnit }}</span>
+      </div>
+    </div>
+    <div v-else-if="distanceInput !== null" class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-300">Interval distance</span>
+      <span class="text-sm text-white">{{ distanceInput }} {{ settingsStore.distanceUnit }}</span>
+    </div>
 
     <div class="space-y-3">
       <div class="flex items-center justify-between">

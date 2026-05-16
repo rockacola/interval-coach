@@ -21,6 +21,7 @@ export const useTimingStore = defineStore(
   'timing',
   () => {
     const events = ref<TimingEvent[]>([]);
+    const intervalDistanceKm = ref<number | null>(null);
     const intervals = ref<Interval[]>([]);
     const laps = ref<Lap[]>([]);
     const runnerIntervals = ref<RunnerInterval[]>([]);
@@ -281,8 +282,13 @@ export const useTimingStore = defineStore(
 
     // ─── Reset ────────────────────────────────────────────────────────────────
 
+    function setIntervalDistance(km: number | null): void {
+      intervalDistanceKm.value = km;
+    }
+
     function clearAll(): void {
       events.value = [];
+      intervalDistanceKm.value = null;
       intervals.value = [];
       laps.value = [];
       runnerIntervals.value = [];
@@ -292,6 +298,7 @@ export const useTimingStore = defineStore(
 
     return {
       events,
+      intervalDistanceKm,
       intervals,
       laps,
       runnerIntervals,
@@ -310,6 +317,7 @@ export const useTimingStore = defineStore(
       clearOverride,
       runnerFastestLap,
       runnerAverageLapMs,
+      setIntervalDistance,
       startRunnerTimer,
       stopRunnerTimer,
       intervalsForRunner,
