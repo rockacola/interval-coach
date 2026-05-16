@@ -13,7 +13,11 @@ export const useRunnerStore = defineStore(
     const runtimeStates = ref<Record<RunnerId, RunnerRuntimeState>>({});
 
     const sortedRunners = computed(() =>
-      [...runners.value].sort((a, b) => a.sortOrder - b.sortOrder)
+      [...runners.value].filter((r) => !r.deleted).sort((a, b) => a.sortOrder - b.sortOrder)
+    );
+
+    const deletedRunners = computed(() =>
+      [...runners.value].filter((r) => r.deleted).sort((a, b) => a.sortOrder - b.sortOrder)
     );
 
     function addRunner(name: string, bibNumber?: string): Runner {
@@ -43,21 +47,17 @@ export const useRunnerStore = defineStore(
     }
 
     function removeRunner(id: RunnerId): void {
-      runners.value = runners.value.filter((r) => r.id !== id);
-      delete runtimeStates.value[id];
-      reindex();
+      const runner = runners.value.find((r) => r.id === id);
+      if (!runner) {
+        return;
+      }
+      runner.deleted = true;
     }
 
     function reorderRunners(orderedIds: RunnerId[]): void {
       orderedIds.forEach((id, index) => {
         const runner = runners.value.find((r) => r.id === id);
         if (runner) runner.sortOrder = index;
-      });
-    }
-
-    function reindex(): void {
-      sortedRunners.value.forEach((r, i) => {
-        r.sortOrder = i;
       });
     }
 
@@ -93,6 +93,7 @@ export const useRunnerStore = defineStore(
       runners,
       runtimeStates,
       sortedRunners,
+      deletedRunners,
       addRunner,
       updateRunner,
       removeRunner,

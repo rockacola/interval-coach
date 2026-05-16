@@ -55,6 +55,7 @@ export interface LapOverride {
 export type RunnerState = 'idle' | 'running' | 'paused' | 'finished';
 
 export interface Runner {
+  deleted?: boolean;
   id: RunnerId;
   name: string;
   bibNumber?: string;
