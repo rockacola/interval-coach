@@ -92,8 +92,8 @@ function startAllIdleRunners() {
       <div class="flex items-center justify-between">
         <label class="text-sm font-medium text-slate-300">Runners</label>
         <button
-          v-if="runnerStore.sortedRunners.length && hasIdleRunners"
           class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800"
+          :class="{ invisible: !runnerStore.sortedRunners.length || !hasIdleRunners }"
           @click="startAllIdleRunners"
         >
           Start All
