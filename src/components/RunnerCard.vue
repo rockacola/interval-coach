@@ -85,11 +85,11 @@ function onBibInput(event: Event) {
             <span class="font-medium">{{ runner.name }}</span>
           </template>
         </span>
+      </span>
+      <div class="flex items-center gap-2">
         <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{
           elapsedDisplay
         }}</span>
-      </span>
-      <div class="flex items-center gap-2">
         <button
           class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white"
           :class="
