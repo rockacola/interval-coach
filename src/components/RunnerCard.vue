@@ -55,11 +55,11 @@ function remove() {
       </span>
       <div class="flex items-center gap-2">
         <button
-          class="px-3 py-1 rounded text-sm font-semibold cursor-pointer"
+          class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white"
           :class="
             isRunning
-              ? 'bg-amber-600 hover:bg-amber-500 active:bg-amber-700 text-white'
-              : 'bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800 text-white'
+              ? 'bg-amber-600 hover:bg-amber-500 active:bg-amber-700'
+              : 'bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800'
           "
           @click="toggleTimer"
         >
