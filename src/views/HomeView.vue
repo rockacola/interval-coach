@@ -32,7 +32,7 @@ function startAllIdleRunners() {
 </script>
 
 <template>
-  <div class="max-w-lg mx-auto px-4 py-8 space-y-8">
+  <div class="w-full max-w-lg mx-auto px-2 py-8 space-y-8">
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-bold tracking-tight">Interval Coach</h1>
       <div class="flex items-center gap-1">
