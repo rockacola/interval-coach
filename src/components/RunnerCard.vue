@@ -42,6 +42,14 @@ const restDisplay = computed(() => {
   return formatDuration(now.value - lastStop);
 });
 
+function adjustRunnerStart(deltaMs: number) {
+  const state = runnerStore.getRuntimeState(props.runner.id);
+  if (!state || state.currentIntervalStartMs === null) return;
+  runnerStore.setRunnerState(props.runner.id, {
+    currentIntervalStartMs: state.currentIntervalStartMs + deltaMs,
+  });
+}
+
 function toggleTimer() {
   if (isRunning.value) {
     timingStore.stopRunnerTimer(props.runner.id);
@@ -90,6 +98,25 @@ function onBibInput(event: Event) {
           <span class="font-medium truncate">{{ runner.name }}</span>
         </template>
       </span>
+      <!-- Sort buttons: edit mode only, in the name row -->
+      <span v-if="editMode" class="flex items-center gap-1 shrink-0">
+        <button
+          :disabled="isFirst"
+          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
+          aria-label="Move runner up"
+          @click="runnerStore.moveRunnerUp(runner.id)"
+        >
+          ↑
+        </button>
+        <button
+          :disabled="isLast"
+          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
+          aria-label="Move runner down"
+          @click="runnerStore.moveRunnerDown(runner.id)"
+        >
+          ↓
+        </button>
+      </span>
       <!-- Stopwatch + button: inline when not editing -->
       <div v-if="!editMode" class="flex items-center gap-2 shrink-0">
         <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{
@@ -112,8 +139,22 @@ function onBibInput(event: Event) {
       </div>
     </div>
 
-    <!-- Edit mode: stopwatch + start/stop + reorder + remove all on one row -->
+    <!-- Edit mode: stopwatch + start/stop row -->
     <div v-if="editMode" class="flex items-center justify-end gap-2">
+      <span v-if="isRunning" class="flex items-center gap-1">
+        <button
+          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 rounded px-2 py-1 leading-none cursor-pointer font-bold text-sm"
+          @click="adjustRunnerStart(+1000)"
+        >
+          −
+        </button>
+        <button
+          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 rounded px-2 py-1 leading-none cursor-pointer font-bold text-sm"
+          @click="adjustRunnerStart(-1000)"
+        >
+          +
+        </button>
+      </span>
       <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{ elapsedDisplay }}</span>
       <span v-else-if="restDisplay" class="font-mono text-sm text-slate-400">{{
         restDisplay
@@ -128,29 +169,6 @@ function onBibInput(event: Event) {
         @click="toggleTimer"
       >
         {{ isRunning ? 'Stop' : 'Start' }}
-      </button>
-      <button
-        :disabled="isFirst"
-        class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
-        aria-label="Move runner up"
-        @click="runnerStore.moveRunnerUp(runner.id)"
-      >
-        ↑
-      </button>
-      <button
-        :disabled="isLast"
-        class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
-        aria-label="Move runner down"
-        @click="runnerStore.moveRunnerDown(runner.id)"
-      >
-        ↓
-      </button>
-      <button
-        class="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white px-2 py-1 rounded text-sm cursor-pointer"
-        aria-label="Remove runner"
-        @click="remove"
-      >
-        ✕
       </button>
     </div>
 
@@ -188,5 +206,15 @@ function onBibInput(event: Event) {
         </template>
       </li>
     </ul>
+
+    <!-- Remove runner: shown at bottom in edit mode -->
+    <div v-if="editMode" class="border-t border-slate-700 pt-2 flex justify-end">
+      <button
+        class="text-sm text-red-400 hover:text-red-300 bg-red-900/30 hover:bg-red-900/50 active:bg-red-900/70 rounded px-3 py-1.5 cursor-pointer"
+        @click="remove"
+      >
+        Remove Runner
+      </button>
+    </div>
   </div>
 </template>
