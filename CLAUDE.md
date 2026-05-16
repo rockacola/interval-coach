@@ -1,3 +1,9 @@
+# Docs
+
+When making code changes, reflect them in all relevant docs: `README.md` and files under `docs/`. This includes route changes, renamed/added/removed files, store changes, and any shift in architecture.
+
+---
+
 # Code Style
 
 ## General
