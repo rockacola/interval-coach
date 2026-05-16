@@ -88,6 +88,30 @@ Routes:
 
 ---
 
+## Soft-delete pattern for runners
+
+Runners are never hard-deleted. `runnerStore.removeRunner()` sets `Runner.deleted = true`. The `sortedRunners` computed excludes deleted runners; `deletedRunners` exposes them for the collapsible "Removed" list. `restoreRunner()` clears the flag.
+
+This means runner identity (name, bib, ID) is always preserved in the store, so any timing data referencing the runner ID stays intact.
+
+---
+
+## Per-runner simple timer
+
+`timingStore` contains two lightweight functions — `startRunnerTimer` / `stopRunnerTimer` — that are separate from the formal `startInterval` / `recordFinish` flow. They drive the current MVP UI: each runner card has its own independent Start/Stop, and completed intervals are appended to `runnerIntervals[]` as `RunnerInterval` records.
+
+This coexists with the formal timing engine (which tracks `TimingEvent[]`, `Interval[]`, `Lap[]`) without conflicting. The intent is that once the full session flow is built, the per-runner simple timer can be retired in favour of the formal engine.
+
+---
+
+## New session flow
+
+"Start new session" (in the settings modal) archives the current state into `historyStore` before clearing the active stores. The archive is a `HistoricalSession` snapshot — runners, events, intervals, laps — persisted to localStorage under the `history` key. Active stores (`runnerStore`, `timingStore`, `sessionStore`) are then cleared so the UI resets to a blank slate.
+
+Old session data is not deleted; it lives in `historyStore` for future session history UI.
+
+---
+
 ## Non-destructive edits
 
 When a coach corrects a lap time:

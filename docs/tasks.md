@@ -20,7 +20,10 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 ## Phase 2 — Runner Management
 
 - [x] `runnerStore` — add / update / remove / reorder runners + runtime state cache
-- [x] `HomeView` — add runners with bib, remove runner
+- [x] `HomeView` — add runners with bib
+- [x] Soft-delete runners (sets `Runner.deleted`; runner identity preserved)
+- [x] Restore soft-deleted runners via collapsible removed list (`RemovedRunnersList`)
+- [x] Per-runner start/stop timer with recorded interval history (`RunnerCard`)
 - [ ] Drag-and-drop runner reordering
   - Use native HTML5 drag API or a lightweight library (e.g. `vue-draggable-plus`)
   - Call `runnerStore.reorderRunners()` on drop
@@ -55,7 +58,7 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 
 ## Phase 5 — Persistence + Restore
 
-- [x] All four stores configured with `persist: true`
+- [x] All five stores configured with `persist: true` (session, runner, timing, history, settings)
 - [x] `RunnerRuntimeState` (including `state: 'running'`) persisted in runnerStore
 - [ ] Manual test: refresh mid-interval → runner timer resumes from correct elapsed
 
@@ -81,6 +84,15 @@ Status key: `[ ]` = not started · `[x]` = done · `[-]` = in progress
 - [ ] Edge case: overrideLap with non-existent ID → silent no-op (already handled, add test)
 - [ ] runnerStore: reorderRunners test — verify sortOrder values
 - [ ] sessionStore: end session sets endedAtMs
+
+---
+
+## Settings + Session Management
+
+- [x] `settingsStore` — persisted user preferences
+- [x] Settings modal (cog icon in header) — time display format toggle (include hours yes/no)
+- [x] New session action — archives current state to `historyStore`, resets active stores
+- [ ] Session history UI — browse and review past sessions from `historyStore`
 
 ---
 

@@ -75,7 +75,7 @@ Pinia replaced Vuex as the official Vue state manager. It's simpler — no mutat
 
 By default, Pinia state lives only in memory. Refresh the page and it's gone. This plugin serializes each store to `localStorage` automatically, so session data survives a page refresh or accidental tap away.
 
-All four stores (`session`, `runner`, `timing`, `history`) are persisted with `persist: true`.
+All five stores (`session`, `runner`, `timing`, `history`, `settings`) are persisted with `persist: true`.
 
 ### Vue Router (hash history)
 
@@ -109,7 +109,17 @@ src/
 │   ├── sessionStore.ts  # current session (name, status, timestamps)
 │   ├── runnerStore.ts   # runner list and per-runner runtime state
 │   ├── timingStore.ts   # events, intervals, laps — the core timing logic
-│   └── historyStore.ts  # completed session archive
+│   ├── historyStore.ts  # completed session archive
+│   └── settingsStore.ts # user preferences (e.g. time display format)
+├── composables/         # reusable Vue composition functions
+│   ├── useNow.ts        # rAF-driven reactive timestamp for live timers
+│   └── useLocalStorageRef.ts # reactive ref backed by localStorage
+├── components/          # shared UI components
+│   ├── AddRunnerForm.vue      # name + bib input form
+│   ├── RunnerCard.vue         # per-runner timer and interval history
+│   ├── RemovedRunnersList.vue # collapsible list of soft-deleted runners
+│   ├── SettingsModal.vue      # settings overlay (time format, new session)
+│   └── AppFooter.vue          # footer bar
 ├── views/               # one component per screen (mounted by the router)
 │   └── HomeView.vue     # runner management
 ├── types/
@@ -149,7 +159,7 @@ The most important thing to understand about this codebase is **how timing data 
 
 The `TimingEvent[]` array in `timingStore` is an append-only log of everything that happened: session started, interval started, runner finished, runner paused, etc. Each event has a `kind`, a `timestampMs`, and optional `runnerId`/`intervalId`.
 
-```
+```text
 SESSION_START  t=0
 INTERVAL_START t=1000
 RUNNER_START   t=1000  runnerId="alice"
