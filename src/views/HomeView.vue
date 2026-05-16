@@ -1,18 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import AddRunnerForm from '@/components/AddRunnerForm.vue';
 import RemovedRunnersList from '@/components/RemovedRunnersList.vue';
 import RunnerCard from '@/components/RunnerCard.vue';
 import SettingsModal from '@/components/SettingsModal.vue';
 import { useRunnerStore } from '@/stores/runnerStore';
+import { useTimingStore } from '@/stores/timingStore';
 
 const runnerStore = useRunnerStore();
+const timingStore = useTimingStore();
 const settingsOpen = ref(false);
 const editMode = ref(false);
 
+const hasIdleRunners = computed(() =>
+  runnerStore.sortedRunners.some((r) => runnerStore.getRuntimeState(r.id)?.state !== 'running')
+);
+
 function addRunner(name: string, bib: string) {
   runnerStore.addRunner(name, bib || undefined);
+}
+
+function startAllIdleRunners() {
+  runnerStore.sortedRunners.forEach((r) => {
+    const state = runnerStore.getRuntimeState(r.id);
+    if (state && state.state !== 'running') {
+      timingStore.startRunnerTimer(r.id);
+    }
+  });
 }
 </script>
 
@@ -74,7 +89,16 @@ function addRunner(name: string, bib: string) {
     <SettingsModal v-if="settingsOpen" @close="settingsOpen = false" />
 
     <div class="space-y-3">
-      <label class="text-sm font-medium text-slate-300">Runners</label>
+      <div class="flex items-center justify-between">
+        <label class="text-sm font-medium text-slate-300">Runners</label>
+        <button
+          v-if="runnerStore.sortedRunners.length && hasIdleRunners"
+          class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800"
+          @click="startAllIdleRunners"
+        >
+          Start All
+        </button>
+      </div>
       <AddRunnerForm @add="addRunner" />
       <ul v-if="runnerStore.sortedRunners.length" class="space-y-2">
         <li v-for="(runner, idx) in runnerStore.sortedRunners" :key="runner.id">
