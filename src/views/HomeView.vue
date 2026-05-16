@@ -2,6 +2,8 @@
 import { computed, ref } from 'vue';
 
 import AddRunnerForm from '@/components/AddRunnerForm.vue';
+import AppButton from '@/components/AppButton.vue';
+import IconButton from '@/components/IconButton.vue';
 import RemovedRunnersList from '@/components/RemovedRunnersList.vue';
 import RunnerCard from '@/components/RunnerCard.vue';
 import SettingsModal from '@/components/SettingsModal.vue';
@@ -36,9 +38,8 @@ function startAllIdleRunners() {
     <div class="flex items-center justify-between">
       <h1 class="text-2xl font-bold tracking-tight">Interval Coach</h1>
       <div class="flex items-center gap-1">
-        <button
-          class="cursor-pointer p-2 rounded hover:bg-slate-700 active:bg-slate-600"
-          :class="editMode ? 'text-amber-400 bg-slate-700' : 'text-slate-400 hover:text-white'"
+        <IconButton
+          :active="editMode"
           :aria-label="editMode ? 'Exit edit mode' : 'Enter edit mode'"
           :aria-pressed="editMode"
           @click="editMode = !editMode"
@@ -57,12 +58,8 @@ function startAllIdleRunners() {
               d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"
             />
           </svg>
-        </button>
-        <button
-          class="text-slate-400 hover:text-white cursor-pointer p-2 rounded hover:bg-slate-700 active:bg-slate-600"
-          aria-label="Open settings"
-          @click="settingsOpen = true"
-        >
+        </IconButton>
+        <IconButton aria-label="Open settings" @click="settingsOpen = true">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -82,7 +79,7 @@ function startAllIdleRunners() {
               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
           </svg>
-        </button>
+        </IconButton>
       </div>
     </div>
 
@@ -91,13 +88,13 @@ function startAllIdleRunners() {
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <label class="text-sm font-medium text-slate-300">Runners</label>
-        <button
-          class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800"
+        <AppButton
+          variant="green"
           :class="{ invisible: !runnerStore.sortedRunners.length || !hasIdleRunners }"
           @click="startAllIdleRunners"
         >
           Start All
-        </button>
+        </AppButton>
       </div>
       <AddRunnerForm @add="addRunner" />
       <ul v-if="runnerStore.sortedRunners.length" class="space-y-2">

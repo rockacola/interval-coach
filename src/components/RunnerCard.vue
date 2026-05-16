@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import AppButton from '@/components/AppButton.vue';
+import GhostButton from '@/components/GhostButton.vue';
 import { useNow } from '@/composables/useNow';
 import { useRunnerStore } from '@/stores/runnerStore';
 import { useSettingsStore } from '@/stores/settingsStore';
@@ -100,22 +102,18 @@ function onBibInput(event: Event) {
       </span>
       <!-- Sort buttons: edit mode only, in the name row -->
       <span v-if="editMode" class="flex items-center gap-1 shrink-0">
-        <button
+        <GhostButton
           :disabled="isFirst"
-          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
           aria-label="Move runner up"
           @click="runnerStore.moveRunnerUp(runner.id)"
+          >↑</GhostButton
         >
-          ↑
-        </button>
-        <button
+        <GhostButton
           :disabled="isLast"
-          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 disabled:opacity-30 disabled:pointer-events-none px-2 py-1 rounded text-sm cursor-pointer"
           aria-label="Move runner down"
           @click="runnerStore.moveRunnerDown(runner.id)"
+          >↓</GhostButton
         >
-          ↓
-        </button>
       </span>
       <!-- Stopwatch + button: inline when not editing -->
       <div v-if="!editMode" class="flex items-center gap-2 shrink-0">
@@ -125,51 +123,25 @@ function onBibInput(event: Event) {
         <span v-else-if="restDisplay" class="font-mono text-sm text-slate-400">{{
           restDisplay
         }}</span>
-        <button
-          class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white"
-          :class="
-            isRunning
-              ? 'bg-amber-600 hover:bg-amber-500 active:bg-amber-700'
-              : 'bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800'
-          "
-          @click="toggleTimer"
-        >
+        <AppButton :variant="isRunning ? 'amber' : 'green'" @click="toggleTimer">
           {{ isRunning ? 'Stop' : 'Start' }}
-        </button>
+        </AppButton>
       </div>
     </div>
 
     <!-- Edit mode: stopwatch + start/stop row -->
     <div v-if="editMode" class="flex items-center justify-end gap-2">
       <span v-if="isRunning" class="flex items-center gap-1">
-        <button
-          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 rounded px-2 py-1 leading-none cursor-pointer font-bold text-sm"
-          @click="adjustRunnerStart(+1000)"
-        >
-          −
-        </button>
-        <button
-          class="text-slate-400 hover:text-white bg-slate-700 hover:bg-slate-600 active:bg-slate-500 rounded px-2 py-1 leading-none cursor-pointer font-bold text-sm"
-          @click="adjustRunnerStart(-1000)"
-        >
-          +
-        </button>
+        <GhostButton bold @click="adjustRunnerStart(+1000)">−</GhostButton>
+        <GhostButton bold @click="adjustRunnerStart(-1000)">+</GhostButton>
       </span>
       <span v-if="isRunning" class="font-mono text-sm text-emerald-400">{{ elapsedDisplay }}</span>
       <span v-else-if="restDisplay" class="font-mono text-sm text-slate-400">{{
         restDisplay
       }}</span>
-      <button
-        class="px-3 py-1 rounded text-sm font-semibold cursor-pointer text-white"
-        :class="
-          isRunning
-            ? 'bg-amber-600 hover:bg-amber-500 active:bg-amber-700'
-            : 'bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-800'
-        "
-        @click="toggleTimer"
-      >
+      <AppButton :variant="isRunning ? 'amber' : 'green'" @click="toggleTimer">
         {{ isRunning ? 'Stop' : 'Start' }}
-      </button>
+      </AppButton>
     </div>
 
     <!-- Recorded intervals -->
@@ -183,25 +155,18 @@ function onBibInput(event: Event) {
         <span class="font-mono">{{ formatTime(interval.stopMs - interval.startMs) }}</span>
         <template v-if="editMode">
           <span class="flex items-center gap-1">
-            <button
-              class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer font-bold text-base"
-              @click="timingStore.adjustRunnerIntervalStop(interval.id, -1000)"
+            <GhostButton bold @click="timingStore.adjustRunnerIntervalStop(interval.id, -1000)"
+              >−</GhostButton
             >
-              −
-            </button>
-            <button
-              class="text-slate-400 hover:text-white hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer font-bold text-base"
-              @click="timingStore.adjustRunnerIntervalStop(interval.id, +1000)"
+            <GhostButton bold @click="timingStore.adjustRunnerIntervalStop(interval.id, +1000)"
+              >+</GhostButton
             >
-              +
-            </button>
-            <button
-              class="text-red-500 hover:text-red-400 hover:bg-slate-700 active:bg-slate-600 rounded px-2 py-1.5 leading-none cursor-pointer text-xs"
+            <GhostButton
+              danger
               aria-label="Delete interval"
               @click="timingStore.removeRunnerInterval(interval.id)"
+              >✕</GhostButton
             >
-              ✕
-            </button>
           </span>
         </template>
       </li>
@@ -209,12 +174,7 @@ function onBibInput(event: Event) {
 
     <!-- Remove runner: shown at bottom in edit mode -->
     <div v-if="editMode" class="border-t border-slate-700 pt-2 flex justify-end">
-      <button
-        class="text-sm text-red-400 hover:text-red-300 bg-red-900/30 hover:bg-red-900/50 active:bg-red-900/70 rounded px-3 py-1.5 cursor-pointer"
-        @click="remove"
-      >
-        Remove Runner
-      </button>
+      <AppButton variant="red" @click="remove">Remove Runner</AppButton>
     </div>
   </div>
 </template>

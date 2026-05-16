@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import AppButton from '@/components/AppButton.vue';
+
 const emit = defineEmits<{
   add: [name: string, bib: string];
 }>();
@@ -34,12 +36,6 @@ function submit() {
       placeholder="Runner name"
       @keydown.enter="submit"
     />
-    <button
-      class="px-3 py-1.5 rounded bg-sky-600 text-sm font-semibold text-white disabled:opacity-40 cursor-pointer"
-      :disabled="!name.trim()"
-      @click="submit"
-    >
-      Add
-    </button>
+    <AppButton variant="blue" :disabled="!name.trim()" @click="submit">Add</AppButton>
   </div>
 </template>
