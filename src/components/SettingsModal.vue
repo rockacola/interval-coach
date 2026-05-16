@@ -7,7 +7,7 @@ import SettingsToggle from '@/components/SettingsToggle.vue';
 import { useHistoryStore } from '@/stores/historyStore';
 import { useRunnerStore } from '@/stores/runnerStore';
 import { useSessionStore } from '@/stores/sessionStore';
-import type { TimeDisplayFormat } from '@/stores/settingsStore';
+import type { DistanceUnit, TimeDisplayFormat } from '@/stores/settingsStore';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
 import { generateId, nowMs } from '@/utils/timing';
@@ -22,7 +22,11 @@ const timingStore = useTimingStore();
 
 const confirmingNew = ref(false);
 
-function onTimeFormatChange(value: string) {
+function onDistanceUnitChange(value: string): void {
+  settingsStore.setDistanceUnit(value as DistanceUnit);
+}
+
+function onTimeFormatChange(value: string): void {
   settingsStore.setTimeFormat(value as TimeDisplayFormat);
 }
 
@@ -60,6 +64,17 @@ function startNewSession(): void {
         <h2 class="text-lg font-semibold">Settings</h2>
         <GhostButton aria-label="Close settings" @click="$emit('close')">✕</GhostButton>
       </div>
+
+      <!-- Distance unit -->
+      <SettingsToggle
+        label="Distance unit"
+        :model-value="settingsStore.distanceUnit"
+        :options="[
+          { label: 'km', value: 'km' },
+          { label: 'mi', value: 'mi' },
+        ]"
+        @update:model-value="onDistanceUnitChange"
+      />
 
       <!-- Include hours -->
       <SettingsToggle
