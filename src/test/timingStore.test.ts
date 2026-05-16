@@ -230,6 +230,30 @@ describe('timingStore', () => {
     expect(timing.currentIntervalNumber).toBe(0);
   });
 
+  it('intervalDistanceKm defaults to null', () => {
+    expect(useTimingStore().intervalDistanceKm).toBeNull();
+  });
+
+  it('setIntervalDistance stores the value', () => {
+    const timing = useTimingStore();
+    timing.setIntervalDistance(1.5);
+    expect(timing.intervalDistanceKm).toBe(1.5);
+  });
+
+  it('setIntervalDistance can be cleared back to null', () => {
+    const timing = useTimingStore();
+    timing.setIntervalDistance(5);
+    timing.setIntervalDistance(null);
+    expect(timing.intervalDistanceKm).toBeNull();
+  });
+
+  it('clearAll resets intervalDistanceKm', () => {
+    const timing = useTimingStore();
+    timing.setIntervalDistance(3);
+    timing.clearAll();
+    expect(timing.intervalDistanceKm).toBeNull();
+  });
+
   it('lapsForRunner returns only that runner s laps', () => {
     const alice = setupRunner('Alice');
     const bob = useRunnerStore().addRunner('Bob');

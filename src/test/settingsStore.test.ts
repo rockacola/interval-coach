@@ -24,4 +24,21 @@ describe('settingsStore', () => {
     store.setTimeFormat('HH:mm:ss.SSS');
     expect(store.timeFormat).toBe('HH:mm:ss.SSS');
   });
+
+  it('defaults distanceUnit to km', () => {
+    expect(useSettingsStore().distanceUnit).toBe('km');
+  });
+
+  it('updates distanceUnit via setDistanceUnit', () => {
+    const store = useSettingsStore();
+    store.setDistanceUnit('mi');
+    expect(store.distanceUnit).toBe('mi');
+  });
+
+  it('can switch distanceUnit back to km', () => {
+    const store = useSettingsStore();
+    store.setDistanceUnit('mi');
+    store.setDistanceUnit('km');
+    expect(store.distanceUnit).toBe('km');
+  });
 });
