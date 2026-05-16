@@ -1,6 +1,6 @@
 import js from '@eslint/js';
 
-const ignores = { ignores: ['dist/**', 'coverage/**', 'node_modules/**'] };
+const ignores = { ignores: ['.vite/**', 'coverage/**', 'dist/**', 'node_modules/**'] };
 import importPlugin from 'eslint-plugin-import';
 import pluginVue from 'eslint-plugin-vue';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
