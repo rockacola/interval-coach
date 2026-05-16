@@ -82,6 +82,9 @@ export default [
   {
     files: ['**/*.ts'],
     languageOptions: {
+      globals: {
+        __APP_VERSION__: 'readonly',
+      },
       parser: tsParser,
     },
     plugins: {
@@ -97,6 +100,9 @@ export default [
       import: importPlugin,
     },
     languageOptions: {
+      globals: {
+        __APP_VERSION__: 'readonly',
+      },
       parserOptions: {
         parser: tsParser,
       },
