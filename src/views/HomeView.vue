@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import AddRunnerForm from '@/components/AddRunnerForm.vue';
 import AppButton from '@/components/AppButton.vue';
@@ -12,6 +13,7 @@ import { useSettingsStore } from '@/stores/settingsStore';
 import { useTimingStore } from '@/stores/timingStore';
 import { displayToKm, kmToDisplay } from '@/utils/distance';
 
+const router = useRouter();
 const runnerStore = useRunnerStore();
 const settingsStore = useSettingsStore();
 const timingStore = useTimingStore();
@@ -157,5 +159,9 @@ function startAllIdleRunners() {
       :runners="runnerStore.deletedRunners"
       @restore="runnerStore.restoreRunner"
     />
+
+    <div class="flex justify-end">
+      <AppButton variant="blue" @click="router.push('/report')">View Run Report →</AppButton>
+    </div>
   </div>
 </template>

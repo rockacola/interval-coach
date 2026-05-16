@@ -85,6 +85,7 @@ Hash history (`createWebHashHistory`) is used throughout so the app works on Git
 Routes:
 
 - `#/` — Home: add/manage runners
+- `#/report` — Report: per-runner interval splits, pace, and summary
 
 ---
 
