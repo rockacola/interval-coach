@@ -9,6 +9,18 @@ Update `README.md` and all files under `docs/` in the same commit as any code ch
 
 ---
 
+# Git
+
+When suggesting a commit message, use a single-line conventional commit format:
+
+```
+<type>: <short description>
+```
+
+Types: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`. No body, no bullet points, no multi-line messages.
+
+---
+
 ## Code Style
 
 ### General
