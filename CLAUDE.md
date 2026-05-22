@@ -1,3 +1,21 @@
+# Journal
+
+Add a journal entry for each working session. Create `journal/YYYY-MM-DD.md` using today's date, or append to it if it already exists.
+
+Each entry has five sections — fill in what is relevant, skip what is not:
+
+- **What I worked on** — what you did
+- **Decisions made** — choices and the reasoning behind them
+- **What I learned** — anything clarified or discovered
+- **Problems / friction** — what slowed you down or broke
+- **Next step** — the single most important thing to do next
+
+Keep entries brief. One or two sentences per section is enough. The goal is a searchable decision log, not a diary.
+
+Use the template in `journal/YYYY-MM-DD.md` as a reference.
+
+---
+
 # Docs
 
 Update `README.md` and all files under `docs/` in the same commit as any code change. Specifically:
