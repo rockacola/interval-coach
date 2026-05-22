@@ -109,5 +109,29 @@ export default [
     },
     rules: sharedRules,
   },
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+      },
+    },
+    plugins: {
+      import: importPlugin,
+    },
+    rules: {
+      'import/order': sharedRules['import/order'],
+      'sort-imports': sharedRules['sort-imports'],
+      curly: sharedRules.curly,
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-unused-expressions': sharedRules['no-unused-expressions'],
+      'no-unreachable': sharedRules['no-unreachable'],
+      'import/no-duplicates': sharedRules['import/no-duplicates'],
+      'import/first': sharedRules['import/first'],
+      'no-eval': sharedRules['no-eval'],
+      eqeqeq: sharedRules.eqeqeq,
+    },
+  },
   prettierConfig,
 ];

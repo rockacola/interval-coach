@@ -41,6 +41,7 @@ npm run format         # auto-format all files with Prettier
 npm run check          # run format + lint + typecheck together (useful before committing)
 npm run test           # run the test suite
 npm run build          # build a production bundle into dist/
+npm run snapshot       # capture full-page screenshots of every route (dev server must be running)
 ```
 
 ---
@@ -98,6 +99,8 @@ Vitest is the test runner. It's built on top of Vite and understands the same mo
 ## Project structure
 
 ```
+scripts/
+└── snapshot.js          # Playwright script — captures full-page PNGs of every route
 src/
 ├── main.ts              # app entry point — wires up Vue, Pinia, Router
 ├── App.vue              # root component — renders the current route
