@@ -31,7 +31,7 @@ It is **not** a fitness tracker, GPS logger, or training planner.
 
 ```bash
 npm install
-npm run dev          # dev server at http://localhost:5173
+npm run dev          # dev server at http://localhost:3000
 npm run test         # run all tests
 npm run build        # production build → dist/
 npm run preview      # preview production build locally

@@ -30,7 +30,7 @@ npm install
 npm run dev
 ```
 
-Open the URL printed in the terminal (usually `http://localhost:5173`). The app hot-reloads on file save — you rarely need to restart the dev server.
+Open the URL printed in the terminal (usually `http://localhost:3000`). The app hot-reloads on file save — you rarely need to restart the dev server.
 
 ### Other useful commands
 

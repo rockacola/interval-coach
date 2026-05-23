@@ -8,6 +8,9 @@ import { version } from './package.json';
 
 export default defineConfig({
   base: '/interval-coach/',
+  server: {
+    port: 3000,
+  },
   define: {
     __APP_VERSION__: JSON.stringify(version),
   },

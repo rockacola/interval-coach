@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { chromium } from 'playwright';
 
-const BASE_URL = 'http://localhost:5173/interval-coach';
+const BASE_URL = 'http://localhost:3000/interval-coach';
 
 // Seeded LCG so the same lap times are generated on every run.
 function makePrng(seed) {
