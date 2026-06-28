@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document describes the architectural decisions behind Interval Coach for anyone planning feature work or debugging. Refer to `tasks.md` for the phased implementation checklist.
+This document describes the architectural decisions behind Interval Coach for anyone planning feature work or debugging. Refer to `.ai/tasks/` for the active task backlog.
 
 ---
 

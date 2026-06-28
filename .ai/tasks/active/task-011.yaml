@@ -1,0 +1,7 @@
+id: task-011
+title: Summary view — per-runner lap list
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Summary view showing per-runner lap list with fastest lap and average lap time.

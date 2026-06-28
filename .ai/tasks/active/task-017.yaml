@@ -1,0 +1,8 @@
+id: task-017
+title: 'Test: overrideLap with non-existent ID'
+status: pending
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Edge case test: timingStore.overrideLap() with a non-existent lap ID should be a silent no-op.
+  Already handled in code; add regression test.

@@ -1,0 +1,12 @@
+id: task-027
+title: Phase 2 — Runner management
+status: done
+agent: implementer
+created_at: '2026-05-22T00:00:00Z'
+description: |
+  runnerStore with add/update/remove/reorder and runtime state cache.
+  HomeView with add-runner form. Soft-delete runners (Runner.deleted flag).
+  Restore soft-deleted runners via RemovedRunnersList.
+  Per-runner start/stop timer with recorded interval history (RunnerCard).
+  Runner reordering via up/down buttons in edit mode.
+  Edit runner name inline with global edit-mode toggle.

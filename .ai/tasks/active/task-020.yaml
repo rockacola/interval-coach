@@ -1,0 +1,7 @@
+id: task-020
+title: Session history UI
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  UI to browse and review past sessions stored in historyStore.

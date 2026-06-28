@@ -1,0 +1,7 @@
+id: task-016
+title: 'Test: startInterval with no runners'
+status: pending
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Edge case test: timingStore.startInterval() with an empty runner store should not throw.

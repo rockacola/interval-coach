@@ -1,0 +1,8 @@
+id: task-015
+title: 'Test: recordFinish when runner is paused'
+status: pending
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Edge case test: timingStore.recordFinish() when the runner is paused should return null
+  and not record a lap.

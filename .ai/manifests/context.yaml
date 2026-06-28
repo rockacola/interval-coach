@@ -1,0 +1,7 @@
+contexts:
+  - path: .ai/context/product.md
+    description: Product purpose, users, features, and goals
+    tags: [product]
+  - path: .ai/context/architecture.md
+    description: System components, data flow, and deployment
+    tags: [architecture]

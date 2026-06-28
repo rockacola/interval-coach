@@ -1,0 +1,8 @@
+id: task-004
+title: Pause / Resume toggle per runner
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Per-runner pause/resume toggle in RunnerCard. Calls timingStore.pauseRunner() / resumeRunner().
+depends_on: [task-001]

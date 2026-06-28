@@ -1,0 +1,9 @@
+id: task-031
+title: Settings store and modal
+status: done
+agent: implementer
+created_at: '2026-05-22T00:00:00Z'
+description: |
+  settingsStore with persisted user preferences.
+  Settings modal (cog icon in header) with time display format toggle (include hours yes/no).
+  New session action — archives current state to historyStore and resets active stores.

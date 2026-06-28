@@ -1,0 +1,7 @@
+id: task-019
+title: 'Test: sessionStore end session sets endedAtMs'
+status: pending
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Test that calling sessionStore.endSession() correctly sets the endedAtMs field.

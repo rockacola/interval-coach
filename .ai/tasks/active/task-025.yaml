@@ -1,0 +1,7 @@
+id: task-025
+title: Accessibility — ARIA labels on icon-only buttons
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Add aria-label attributes to all icon-only buttons (up/down reorder, settings cog, etc.).

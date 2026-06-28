@@ -1,0 +1,10 @@
+id: task-032
+title: Phase 7 (partial) — core test suite
+status: done
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Vitest setup with pinia isolation.
+  timing.utils.test.ts — format, elapsed, fastest, average, override.
+  timingStore.test.ts — interval lifecycle, finish recording, pause accounting, override/clear.
+  persistence.test.ts — state shape and integrity after operations.

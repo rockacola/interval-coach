@@ -1,0 +1,63 @@
+# AI systems must not read or modify these paths.
+
+# Secrets and credentials
+.env
+.env.*
+.env.local
+.env.production
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+.output/
+target/
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+vendor/
+__pycache__/
+*.pyc
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Runtime version managers
+.tool-versions
+.nvmrc
+.node-version
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# AI archive (read-only reference, do not modify)
+.ai/archive/
+
+# Test snapshots (managed by test runner, not AI)
+**/__snapshots__/
+
+# Vite cache
+.vite/
+
+# Test coverage output
+coverage/
+
+# App snapshots (local screenshots, not committed)
+snapshots/

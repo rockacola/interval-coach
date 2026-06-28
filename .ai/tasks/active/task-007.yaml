@@ -1,0 +1,9 @@
+id: task-007
+title: Haptic feedback on finish tap
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Trigger navigator.vibrate(50) on tap-to-finish for outdoor confirmation.
+  Degrades silently if not supported.
+depends_on: [task-003]

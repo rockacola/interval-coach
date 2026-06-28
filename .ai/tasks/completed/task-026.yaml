@@ -1,0 +1,10 @@
+id: task-026
+title: Phase 1 — Project scaffold and foundation
+status: done
+agent: implementer
+created_at: '2026-05-22T00:00:00Z'
+description: |
+  Vite + Vue 3 + TypeScript scaffold. TailwindCSS v4. Pinia + pinia-plugin-persistedstate.
+  Vue Router with hash history (GitHub Pages compatible). src/types/index.ts full data model.
+  src/utils/timing.ts pure timing utilities. Vitest configured with jsdom.
+  vite.config.ts with base: '/interval-coach/'.

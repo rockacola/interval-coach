@@ -1,0 +1,7 @@
+id: task-021
+title: PWA manifest + service worker
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Add PWA manifest and service worker for offline support.

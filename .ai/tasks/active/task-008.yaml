@@ -1,0 +1,9 @@
+id: task-008
+title: Edit lap modal / inline input
+status: pending
+agent: implementer
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  UI for editing a recorded lap time. Show original and corrected side-by-side.
+  Accept mm:ss or mm:ss.t format. Validate: non-zero, < 1 hour.
+  Uses timingStore.overrideLap() and timingStore.clearOverride().

@@ -1,0 +1,8 @@
+id: task-010
+title: Manual test — refresh mid-interval persistence
+status: pending
+agent: qa
+created_at: '2026-05-23T00:00:00Z'
+description: |
+  Manually verify: start a runner, refresh the page mid-interval,
+  confirm the runner timer resumes from the correct elapsed time.
